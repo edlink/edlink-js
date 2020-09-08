@@ -1,6 +1,6 @@
 {
   "name": "edlink-js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "NodeJS wrapper for the Edlink API.",
   "main": "./lib/index.js",
   "scripts": {
