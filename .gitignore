@@ -35,3 +35,4 @@ jspm_packages
 
 others
 .DS_Store
+deploy.sh
