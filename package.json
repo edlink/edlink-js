@@ -25,6 +25,10 @@
     "node",
     "javascript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edlink/edlink-js"
+  },
   "author": "Dakota Gordon <dakota@ed.link>",
   "license": "MIT",
   "devDependencies": {
