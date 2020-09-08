@@ -2,7 +2,7 @@
   "name": "edlink-js",
   "version": "0.0.1",
   "description": "NodeJS wrapper for the Edlink API.",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf dist",
     "test": "yarn run cover",
@@ -38,5 +38,8 @@
     "mocha": "^6.1.3",
     "nyc": "^13.3.0",
     "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
   }
 }
