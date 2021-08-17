@@ -1,1 +1,0 @@
-'use strict';function _classCallCheck(a,b){if(!(a instanceof b))throw new TypeError('Cannot call a class as a function')}var axios=require('axios');module.exports=function a(b,c){var d=c.access_token;_classCallCheck(this,a),this.edlink=b,this.token=d};
