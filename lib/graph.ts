@@ -1,31 +1,35 @@
+// noinspection JSUnusedGlobalSymbols
+
 import axios, { AxiosInstance } from 'axios';
 import {
-    EdlinkV2Class,
-    EdlinkV2Agent,
-    EdlinkV2Session,
     Convert,
+    EdlinkV1Organization,
+    EdlinkV1OrganizationType,
+    EdlinkV2Agent,
+    EdlinkV2Class,
+    EdlinkV2Course,
     EdlinkV2District,
     EdlinkV2Enrollment,
     EdlinkV2Person,
     EdlinkV2School,
     EdlinkV2Section,
-    EdlinkV2Course
+    EdlinkV2Session
 } from '../../types/gen/ts/edlink';
 import { Filter } from './filter';
 
 export abstract class GraphAPI {
-    protected axios: AxiosInstance;
+    private axios: AxiosInstance;
 
-    protected constructor(private readonly integration_access_token: string) {
+    protected constructor(private readonly integration_access_token: string, private readonly version: 'v1' | 'v2') {
         this.axios = axios.create({
-            baseURL: 'https://ed.link/api/v2/graph',
+            baseURL: `https://ed.link/api/${version}/graph`,
             headers: {
                 authorization: `Bearer ${integration_access_token}`
             }
         });
     }
 
-    protected async *paginate<T>(url: string, filter?: Filter, limit?: number, formatter?: (raw: any) => T): AsyncGenerator<T> {
+    protected async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number): AsyncGenerator<T> {
         let remaining = limit;
         let next = `${url}?$first=10000${filter ? `&$filter=${filter.toString()}` : ''}`;
 
@@ -33,7 +37,7 @@ export abstract class GraphAPI {
             const response = await this.axios.get(url).then((n) => n.data);
 
             for (const item of response.$data) {
-                yield item;
+                yield formatter(item);
 
                 if (remaining !== undefined) {
                     remaining--;
@@ -43,154 +47,197 @@ export abstract class GraphAPI {
             next = response.$next;
         }
     }
+
+    protected async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
+        return this.axios.get(url).then((res) => formatter(res.data.$data));
+    }
 }
 
 export class GraphV1 extends GraphAPI {
     constructor(integration_access_token: string) {
-        super(integration_access_token);
+        super(integration_access_token, 'v1');
+    }
+
+    async *listOrganizations(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
+        const url = organization_type ? `/${organization_type}s` : '/organizations';
+        return this.paginate<EdlinkV1Organization>(url, Convert.toEdlinkV1Organization);
+    }
+
+    async fetchOrganization(organization_type: EdlinkV1OrganizationType, organization_id: string): Promise<EdlinkV1Organization> {
+        return this.fetch<EdlinkV1Organization>(`/${organization_type}/${organization_id}`, Convert.toEdlinkV1Organization);
+    }
+
+    async *listCourses(): AsyncGenerator<EdlinkV1Organization> {
+        return this.listOrganizations(EdlinkV1OrganizationType.Course);
+    }
+
+    async fetchCourse(organization_id: string): Promise<EdlinkV1Organization> {
+        return this.fetchOrganization(EdlinkV1OrganizationType.Course, organization_id);
+    }
+
+    async *listDistricts(): AsyncGenerator<EdlinkV1Organization> {
+        return this.listOrganizations(EdlinkV1OrganizationType.District);
+    }
+
+    async fetchDistrict(organization_id: string): Promise<EdlinkV1Organization> {
+        return this.fetchOrganization(EdlinkV1OrganizationType.District, organization_id);
+    }
+
+    async *listSchools(): AsyncGenerator<EdlinkV1Organization> {
+        return this.listOrganizations(EdlinkV1OrganizationType.School);
+    }
+
+    async fetchSchool(organization_id: string): Promise<EdlinkV1Organization> {
+        return this.fetchOrganization(EdlinkV1OrganizationType.School, organization_id);
+    }
+
+    async *listSections(): AsyncGenerator<EdlinkV1Organization> {
+        return this.listOrganizations(EdlinkV1OrganizationType.Section);
+    }
+
+    async fetchSection(organization_id: string): Promise<EdlinkV1Organization> {
+        return this.fetchOrganization(EdlinkV1OrganizationType.Section, organization_id);
     }
 }
 
 export class GraphV2 extends GraphAPI {
     constructor(integration_access_token: string) {
-        super(integration_access_token);
+        super(integration_access_token, 'v2');
     }
 
     async *listDistricts(): AsyncGenerator<EdlinkV2District> {
-        return this.paginate<EdlinkV2District>('/districts', undefined, undefined, (raw) => Convert.toEdlinkV2District(raw));
+        return this.paginate('/districts', Convert.toEdlinkV2District);
     }
 
     async fetchDistrict(district_id: string): Promise<EdlinkV2District> {
-        return this.axios.get(`/districts/${district_id}`).then((res) => Convert.toEdlinkV2District(res.data));
+        return this.fetch(`/districts/${district_id}`, Convert.toEdlinkV2District);
     }
 
     async *listSchools(filter?: Filter): AsyncGenerator<EdlinkV2School> {
-        return this.paginate<EdlinkV2School>('/schools', filter, undefined, (raw) => Convert.toEdlinkV2School(raw));
+        return this.paginate('/schools', Convert.toEdlinkV2School, filter);
     }
 
     async fetchSchool(school_id: string): Promise<EdlinkV2School> {
-        return this.axios.get(`/schools/${school_id}`).then((res) => Convert.toEdlinkV2School(res.data));
+        return this.fetch(`/schools/${school_id}`, Convert.toEdlinkV2School);
     }
 
     async *listClasses(filter?: Filter): AsyncGenerator<EdlinkV2Class> {
-        return this.paginate<EdlinkV2Class>('/classes', filter, undefined, (raw) => Convert.toEdlinkV2Class(raw));
+        return this.paginate('/classes', Convert.toEdlinkV2Class, filter);
     }
 
     async fetchClass(class_id: string): Promise<EdlinkV2Class> {
-        return this.axios.get(`/classes/${class_id}`).then((res) => Convert.toEdlinkV2Class(res.data));
+        return this.fetch(`/classes/${class_id}`, Convert.toEdlinkV2Class);
     }
 
     async *listClassSections(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
-        return this.paginate<EdlinkV2Section>(`/classes/${class_id}/sections`, filter, undefined, (raw) => Convert.toEdlinkV2Section(raw));
+        return this.paginate(`/classes/${class_id}/sections`, Convert.toEdlinkV2Section, filter);
     }
 
     async *listClassEnrollments(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
-        return this.paginate<EdlinkV2Enrollment>(`/classes/${class_id}/enrollments`, filter, undefined, (raw) => Convert.toEdlinkV2Enrollment(raw));
+        return this.paginate(`/classes/${class_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
     async *listClassPeople(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/classes/${class_id}/people`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/classes/${class_id}/people`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listClassTeachers(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/classes/${class_id}/teachers`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/classes/${class_id}/teachers`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listClassStudents(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/classes/${class_id}/students`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/classes/${class_id}/students`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listSections(filter?: Filter): AsyncGenerator<EdlinkV2Section> {
-        return this.paginate<EdlinkV2Section>('/sections', filter, undefined, (raw) => Convert.toEdlinkV2Section(raw));
+        return this.paginate('/sections', Convert.toEdlinkV2Section, filter);
     }
 
     async fetchSection(section_id: string): Promise<EdlinkV2Section> {
-        return this.axios.get(`/sections/${section_id}`).then((res) => Convert.toEdlinkV2Section(res.data));
+        return this.fetch(`/sections/${section_id}`, Convert.toEdlinkV2Section);
     }
 
     async *listSectionEnrollments(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
-        return this.paginate<EdlinkV2Enrollment>(`/sections/${section_id}/enrollments`, filter, undefined, (raw) =>
-            Convert.toEdlinkV2Enrollment(raw)
-        );
+        return this.paginate(`/sections/${section_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
     async *listSectionPeople(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/sections/${section_id}/people`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/sections/${section_id}/people`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listSectionTeachers(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/sections/${section_id}/teachers`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/sections/${section_id}/teachers`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listSectionStudents(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>(`/sections/${section_id}/students`, filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate(`/sections/${section_id}/students`, Convert.toEdlinkV2Person, filter);
     }
 
     async *listPeople(filter?: Filter): AsyncGenerator<EdlinkV2Person> {
-        return this.paginate<EdlinkV2Person>('/people', filter, undefined, (raw) => Convert.toEdlinkV2Person(raw));
+        return this.paginate('/people', Convert.toEdlinkV2Person, filter);
     }
 
     async fetchPerson(person_id: string): Promise<EdlinkV2Person> {
-        return this.axios.get(`/people/${person_id}`).then((res) => Convert.toEdlinkV2Person(res.data));
+        return this.fetch(`/people/${person_id}`, Convert.toEdlinkV2Person);
     }
 
     async *listPersonEnrollments(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
-        return this.paginate<EdlinkV2Enrollment>(`/people/${person_id}/enrollments`, filter, undefined, (raw) => Convert.toEdlinkV2Enrollment(raw));
+        return this.paginate(`/people/${person_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
     async *listPersonDistricts(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2District> {
-        return this.paginate<EdlinkV2District>(`/people/${person_id}/districts`, filter, undefined, (raw) => Convert.toEdlinkV2District(raw));
+        return this.paginate(`/people/${person_id}/districts`, Convert.toEdlinkV2District, filter);
     }
 
     async *listPersonSchools(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2School> {
-        return this.paginate<EdlinkV2School>(`/people/${person_id}/schools`, filter, undefined, (raw) => Convert.toEdlinkV2School(raw));
+        return this.paginate(`/people/${person_id}/schools`, Convert.toEdlinkV2School, filter);
     }
 
     async *listPersonClasses(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
-        return this.paginate<EdlinkV2Class>(`/people/${person_id}/classes`, filter, undefined, (raw) => Convert.toEdlinkV2Class(raw));
+        return this.paginate(`/people/${person_id}/classes`, Convert.toEdlinkV2Class, filter);
     }
 
     async *listPersonSections(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
-        return this.paginate<EdlinkV2Section>(`/people/${person_id}/sections`, filter, undefined, (raw) => Convert.toEdlinkV2Section(raw));
+        return this.paginate(`/people/${person_id}/sections`, Convert.toEdlinkV2Section, filter);
     }
 
     async *listPersonAgents(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
-        return this.paginate<EdlinkV2Agent>(`/people/${person_id}/agents`, filter, undefined, (raw) => Convert.toEdlinkV2Agent(raw));
+        return this.paginate(`/people/${person_id}/agents`, Convert.toEdlinkV2Agent, filter);
     }
 
     async *listEnrollments(filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
-        return this.paginate<EdlinkV2Enrollment>('/enrollments', filter, undefined, (raw) => Convert.toEdlinkV2Enrollment(raw));
+        return this.paginate<EdlinkV2Enrollment>('/enrollments', Convert.toEdlinkV2Enrollment, filter);
     }
 
     async fetchEnrollment(enrollment_id: string): Promise<EdlinkV2Person> {
-        return this.axios.get(`/enrollments/${enrollment_id}`).then((res) => Convert.toEdlinkV2Enrollment(res.data));
+        return this.fetch(`/enrollments/${enrollment_id}`, Convert.toEdlinkV2Enrollment);
     }
 
     async *listCourses(filter?: Filter): AsyncGenerator<EdlinkV2Course> {
-        return this.paginate<EdlinkV2Course>('/courses', filter, undefined, (raw) => Convert.toEdlinkV2Course(raw));
+        return this.paginate('/courses', Convert.toEdlinkV2Course, filter);
     }
 
     async fetchCourse(course_id: string): Promise<EdlinkV2Course> {
-        return this.axios.get(`/courses/${course_id}`).then((res) => Convert.toEdlinkV2Course(res.data));
+        return this.fetch(`/courses/${course_id}`, Convert.toEdlinkV2Course);
     }
 
     async *listCourseClasses(course_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
-        return this.paginate<EdlinkV2Class>(`/courses/${course_id}/classes`, filter, undefined, (raw) => Convert.toEdlinkV2Class(raw));
+        return this.paginate(`/courses/${course_id}/classes`, Convert.toEdlinkV2Class, filter);
     }
 
     async *listSessions(filter?: Filter): AsyncGenerator<EdlinkV2Session> {
-        return this.paginate<EdlinkV2Session>('/sessions', filter, undefined, (raw) => Convert.toEdlinkV2Session(raw));
+        return this.paginate('/sessions', Convert.toEdlinkV2Session, filter);
     }
 
     async fetchSession(session_id: string): Promise<EdlinkV2Session> {
-        return this.axios.get(`/sessions/${session_id}`).then((res) => Convert.toEdlinkV2Session(res.data));
+        return this.fetch(`/sessions/${session_id}`, Convert.toEdlinkV2Session);
     }
 
     async *listAgents(filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
-        return this.paginate<EdlinkV2Agent>('/agents', filter, undefined, (raw) => Convert.toEdlinkV2Agent(raw));
+        return this.paginate('/agents', Convert.toEdlinkV2Agent, filter);
     }
 
     async fetchAgent(agent_id: string): Promise<EdlinkV2Agent> {
-        return this.axios.get(`/agents/${agent_id}`).then((res) => Convert.toEdlinkV2Agent(res.data));
+        return this.fetch(`/agents/${agent_id}`, Convert.toEdlinkV2Agent);
     }
 }
