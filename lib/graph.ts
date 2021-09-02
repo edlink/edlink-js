@@ -3,10 +3,13 @@
 import axios, { AxiosInstance } from 'axios';
 import {
     Convert,
+    EdlinkV1Event,
     EdlinkV1Enrollment,
     EdlinkV1EnrollmentType,
     EdlinkV1Organization,
     EdlinkV1OrganizationType,
+    EdlinkV1Term,
+    EdlinkV1Person,
     EdlinkV2Agent,
     EdlinkV2Class,
     EdlinkV2Course,
@@ -31,7 +34,7 @@ export abstract class GraphAPI {
         });
     }
 
-    protected async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number): AsyncGenerator<T> {
+    protected async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
         let remaining = limit;
         let next = `${url}?$first=10000${filter ? `&$filter=${filter.toString()}` : ''}`;
 
@@ -39,7 +42,13 @@ export abstract class GraphAPI {
             const response = await this.axios.get(url).then((n) => n.data);
 
             for (const item of response.$data) {
-                yield formatter(item);
+                const formatted = formatter(item);
+
+                if(until !== undefined && until(formatted)) {
+                    return;
+                }
+
+                yield formatted;
 
                 if (remaining !== undefined) {
                     remaining--;
@@ -110,20 +119,59 @@ export class GraphV1 extends GraphAPI {
         return this.paginate(url, Convert.toEdlinkV1Enrollment);
     }
 
-    async *listDistrictEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+    async *listDistrictEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType): AsyncGenerator<EdlinkV1Enrollment> {
         return this.listOrganizationEnrollments(EdlinkV1OrganizationType.District, organization_id, enrollment_type);
     }
 
-    async *listSchoolEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+    async *listSchoolEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType): AsyncGenerator<EdlinkV1Enrollment> {
         return this.listOrganizationEnrollments(EdlinkV1OrganizationType.School, organization_id, enrollment_type);
     }
 
-    async *listCourseEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+    async *listCourseEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType): AsyncGenerator<EdlinkV1Enrollment> {
         return this.listOrganizationEnrollments(EdlinkV1OrganizationType.Course, organization_id, enrollment_type);
     }
 
-    async *listSectionEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+    async *listSectionEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType): AsyncGenerator<EdlinkV1Enrollment> {
         return this.listOrganizationEnrollments(EdlinkV1OrganizationType.Section, organization_id, enrollment_type);
+    }
+
+    async *listTerms(): AsyncGenerator<EdlinkV1Term> {
+        return this.paginate('/terms', Convert.toEdlinkV1Term);
+    }
+
+    async fetchTerm(term_id: string): Promise<EdlinkV1Term> {
+        return this.fetch(`/terms/${term_id}`, Convert.toEdlinkV1Term);
+    }
+
+    async *listPeople(): AsyncGenerator<EdlinkV1Person> {
+        return this.paginate('/people', Convert.toEdlinkV1Person);
+    }
+
+    async fetchPerson(person_id: string): Promise<EdlinkV1Person> {
+        return this.fetch(`/people/${person_id}`, Convert.toEdlinkV1Person);
+    }
+
+    async *listEnrollments(): AsyncGenerator<EdlinkV1Enrollment> {
+        return this.paginate('/enrollments', Convert.toEdlinkV1Enrollment);
+    }
+
+    async fetchEnrollment(enrollment_id: string): Promise<EdlinkV1Enrollment> {
+        return this.fetch(`/enrollments/${enrollment_id}`, Convert.toEdlinkV1Enrollment);
+    }
+
+    async *listEvents(since?: Date): AsyncGenerator<EdlinkV1Event> {
+        return this.paginate('/events', Convert.toEdlinkV1Event, undefined, undefined, (next) => {
+            if(since === undefined || next.created_date === undefined) {
+                return false;
+            }
+
+            // We want to stop iterating through events if we encounter one that's older than our "since" parameter.
+            return next.created_date < since;
+        });
+    }
+
+    async fetchEvent(event_id: string): Promise<EdlinkV1Event> {
+        return this.fetch(`/events/${event_id}`, Convert.toEdlinkV1Event);
     }
 }
 
