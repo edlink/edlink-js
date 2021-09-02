@@ -3,6 +3,8 @@
 import axios, { AxiosInstance } from 'axios';
 import {
     Convert,
+    EdlinkV1Enrollment,
+    EdlinkV1EnrollmentType,
     EdlinkV1Organization,
     EdlinkV1OrganizationType,
     EdlinkV2Agent,
@@ -97,6 +99,31 @@ export class GraphV1 extends GraphAPI {
 
     async fetchSection(organization_id: string): Promise<EdlinkV1Organization> {
         return this.fetchOrganization(EdlinkV1OrganizationType.Section, organization_id);
+    }
+
+    async *listOrganizationEnrollments(
+        organization_type: EdlinkV1OrganizationType,
+        organization_id: string,
+        enrollment_type?: EdlinkV1EnrollmentType
+    ): AsyncGenerator<EdlinkV1Enrollment> {
+        const url = `/${organization_type}/${organization_id}/${enrollment_type ?? 'enrollments'}`;
+        return this.paginate(url, Convert.toEdlinkV1Enrollment);
+    }
+
+    async *listDistrictEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+        return this.listOrganizationEnrollments(EdlinkV1OrganizationType.District, organization_id, enrollment_type);
+    }
+
+    async *listSchoolEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+        return this.listOrganizationEnrollments(EdlinkV1OrganizationType.School, organization_id, enrollment_type);
+    }
+
+    async *listCourseEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+        return this.listOrganizationEnrollments(EdlinkV1OrganizationType.Course, organization_id, enrollment_type);
+    }
+
+    async *listSectionEnrollments(organization_id: string, enrollment_type?: EdlinkV1EnrollmentType) {
+        return this.listOrganizationEnrollments(EdlinkV1OrganizationType.Section, organization_id, enrollment_type);
     }
 }
 
