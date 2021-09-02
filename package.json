@@ -5,17 +5,19 @@
   "description": "NodeJS wrapper for the Edlink API.",
   "main": "./lib/index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "yarn jest",
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "test": "yarn build && yarn jest",
     "format": "prettier --write \"lib/**/*.js\""
   },
   "contributors": [
-    "Dakota Gordon <dakota@ed.link>"
+    "Dakota Gordon <dakota@ed.link>",
+    "Chris McLain <chris@ed.link>"
   ],
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "jest": "^27.0.6",
+    "jest": "^27.1.0",
     "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   },
   "dependencies": {
