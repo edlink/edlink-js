@@ -15,12 +15,14 @@
   ],
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "@types/url-join": "^4.0.1",
     "jest": "^27.1.0",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "url-join": "^4.0.1"
   }
 }

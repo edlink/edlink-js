@@ -4,6 +4,7 @@ import {
     EdlinkV1Permission
 } from '../../types/gen/ts/edlink';
 import axios from 'axios';
+import { MetaV1 } from './meta';
 
 export { Filter } from './filter';
 
@@ -23,8 +24,8 @@ export class Edlink {
         user(user_access_token: string): any {
             return {};
         },
-        meta(application_access_token: string): any {
-            return {};
+        meta(application_secret_key: string): any {
+            return new MetaV1(application_secret_key);
         },
         async providers(): Promise<EdlinkV1Provider[]> {
             return axios.get('https://ed.link/api/v1/providers').then(res => res.data.$data);

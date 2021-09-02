@@ -21,46 +21,12 @@ import {
     EdlinkV2Session
 } from '../../types/gen/ts/edlink';
 import { Filter } from './filter';
+import { API, APIVersion } from './api';
 
-export abstract class GraphAPI {
-    private axios: AxiosInstance;
+export abstract class GraphAPI extends API {
 
-    protected constructor(private readonly integration_access_token: string, private readonly version: 'v1' | 'v2') {
-        this.axios = axios.create({
-            baseURL: `https://ed.link/api/${version}/graph`,
-            headers: {
-                authorization: `Bearer ${integration_access_token}`
-            }
-        });
-    }
-
-    protected async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
-        let remaining = limit;
-        let next = `${url}?$first=10000${filter ? `&$filter=${filter.toString()}` : ''}`;
-
-        while (next && (remaining === undefined || remaining > 0)) {
-            const response = await this.axios.get(url).then((n) => n.data);
-
-            for (const item of response.$data) {
-                const formatted = formatter(item);
-
-                if(until !== undefined && until(formatted)) {
-                    return;
-                }
-
-                yield formatted;
-
-                if (remaining !== undefined) {
-                    remaining--;
-                }
-            }
-
-            next = response.$next;
-        }
-    }
-
-    protected async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
-        return this.axios.get(url).then((res) => formatter(res.data.$data));
+    protected constructor(private readonly integration_access_token: string, private readonly version: APIVersion) {
+        super(integration_access_token, `/${version}/graph`);
     }
 }
 
@@ -75,7 +41,7 @@ export class GraphV1 extends GraphAPI {
     }
 
     async fetchOrganization(organization_type: EdlinkV1OrganizationType, organization_id: string): Promise<EdlinkV1Organization> {
-        return this.fetch<EdlinkV1Organization>(`/${organization_type}/${organization_id}`, Convert.toEdlinkV1Organization);
+        return this.fetch(`/${organization_type}/${organization_id}`, Convert.toEdlinkV1Organization);
     }
 
     async *listCourses(): AsyncGenerator<EdlinkV1Organization> {

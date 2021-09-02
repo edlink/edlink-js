@@ -4,6 +4,7 @@
     "module": "commonjs",
     "strict": true,
     "outDir": "./dist",
-    "incremental": true
+    "incremental": true,
+    "esModuleInterop": true
   }
 }
