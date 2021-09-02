@@ -18,7 +18,13 @@ export class Edlink {
     public static v2 = {
         graph(integration_access_token: string): GraphV2 {
             return new GraphV2(integration_access_token);
-        }
+        },
+        user(user_access_token: string): any {
+            throw new Error('Not implemented');
+        },
+        meta(application_secret_key: string): any {
+            throw new Error('Not implemented');
+        },
     };
 
     public static v1 = {
@@ -26,9 +32,9 @@ export class Edlink {
             return new GraphV1(integration_access_token);
         },
         user(user_access_token: string): any {
-            return {};
+            throw new Error('Not implemented');
         },
-        meta(application_secret_key: string = ''): any {
+        meta(application_secret_key: string = ''): MetaV1 {
             return new MetaV1(application_secret_key);
         },
         async listProviders(): Promise<EdlinkV1Provider[]> {
