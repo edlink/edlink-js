@@ -21,7 +21,7 @@ export abstract class API {
         })
     }
 
-    protected async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
+    async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
         let remaining = limit;
         let next = `${url}?$first=10000${filter ? `&$filter=${filter.toString()}` : ''}`;
 
@@ -46,7 +46,7 @@ export abstract class API {
         }
     }
 
-    protected async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
+    async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
         return this.axios.get(url).then((res) => formatter(res.data.$data));
     }
 }

@@ -5,7 +5,6 @@ import {
     EdlinkV1Provider,
     EdlinkV1Permission
 } from '../../types/gen/ts/edlink';
-import { Edlink } from './index';
 
 export abstract class MetaAPI extends API {
     protected constructor(private readonly application_secret_key: string, private readonly version: APIVersion) {

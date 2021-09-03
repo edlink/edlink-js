@@ -1,14 +1,16 @@
-import { GraphV1, GraphV2 } from './graph';
+// noinspection JSUnusedGlobalSymbols
+
 import {
     EdlinkV1Provider,
     EdlinkV1Permission
 } from '../../types/gen/ts/edlink';
 import axios from 'axios';
+import { GraphV1, GraphV2 } from './graph';
 import { MetaV1 } from './meta';
 
 export { Filter } from './filter';
 
-export class Edlink {
+export default class Edlink {
     private constructor() {}
 
     static async up(): Promise<boolean> {
