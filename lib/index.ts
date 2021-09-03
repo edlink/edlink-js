@@ -20,13 +20,7 @@ export default class Edlink {
     public static v2 = {
         graph(integration_access_token: string): GraphV2 {
             return new GraphV2(integration_access_token);
-        },
-        user(user_access_token: string): any {
-            throw new Error('Not implemented');
-        },
-        meta(application_secret_key: string): any {
-            throw new Error('Not implemented');
-        },
+        }
     };
 
     public static v1 = {
