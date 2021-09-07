@@ -1,4 +1,6 @@
 # edlink-js
+[![npm version](https://img.shields.io/npm/v/edlink/edlink-js)](https://www.npmjs.org/package/edlink/edlink-js)
+
 This Edlink JavaScript & TypeScript SDK is a NodeJS wrapper for the Edlink API.
 
 | API | v1 | v2 |
@@ -11,7 +13,15 @@ Support for the Edlink User API v2 and Meta API v2 will be added when they are i
 
 ## Quickstart Guide
 
+Install the `edlink-js` package using `npm` or `yarn`.
+```shell
+yarn add @edlink/edlink-js
+```
+
 ```js
+// Import edlink-js
+const { Edlink } = require('edlink-js');
+
 // Check your connection with Edlink's API.
 const up = await Edlink.up();
 ```
