@@ -7,8 +7,10 @@ import {
 import axios from 'axios';
 import { GraphV1, GraphV2 } from './graph';
 import { MetaV1 } from './meta';
+import { Auth, UserV1 } from './user';
 
 export { Filter } from './filter';
+export { Auth } from './user';
 
 export default class Edlink {
     private constructor() {}
@@ -27,25 +29,11 @@ export default class Edlink {
         graph(integration_access_token: string): GraphV1 {
             return new GraphV1(integration_access_token);
         },
-        user(user_access_token: string): any {
-            throw new Error('Not implemented');
+        user(auth: Auth): any {
+            return new UserV1(auth);
         },
-        meta(application_secret_key: string = ''): MetaV1 {
+        meta(application_secret_key: string): MetaV1 {
             return new MetaV1(application_secret_key);
-        },
-        async listProviders(): Promise<EdlinkV1Provider[]> {
-            const providers = [];
-            for await (const provider of this.meta().listProviders()) {
-                providers.push(provider);
-            }
-            return providers;
-        },
-        async listPermissions(): Promise<EdlinkV1Permission[]> {
-            const permissions = [];
-            for await (const permission of this.meta().listPermissions()) {
-                permissions.push(permission);
-            }
-            return permissions;
         }
     };
 }

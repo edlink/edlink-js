@@ -1,10 +1,10 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Filter } from './filter';
 import join from 'url-join';
 
 export type APIVersion = 'v1' | 'v2';
 
-export abstract class API {
+export abstract class BearerTokenAPI {
     protected axios: AxiosInstance;
 
     protected constructor(private readonly bearer_token: string, private readonly url: string) {
@@ -13,12 +13,16 @@ export abstract class API {
 
             // We include this to disable automatic JSON parsing by axios.
             // We want to use our generated Convert class instead.
-            transformResponse: res => res,
-
-            headers: {
-                authorization: `Bearer ${bearer_token}`
-            }
+            transformResponse: res => res
         })
+    }
+
+    protected async getRequestConfig(): Promise<AxiosRequestConfig> {
+        return {
+            headers: {
+                authorization: `Bearer ${this.bearer_token}`
+            }
+        }
     }
 
     async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
@@ -26,7 +30,7 @@ export abstract class API {
         let next = `${url}?$first=10000${filter ? `&$filter=${filter.toString()}` : ''}`;
 
         while (next && (remaining === undefined || remaining > 0)) {
-            const response = await this.axios.get(url).then((n) => n.data);
+            const response = await this.axios.get(url, await this.getRequestConfig()).then((n) => n.data);
 
             for (const item of response.$data) {
                 const formatted = formatter(item);
@@ -47,6 +51,6 @@ export abstract class API {
     }
 
     async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
-        return this.axios.get(url).then((res) => formatter(res.data.$data));
+        return this.axios.get(url, await this.getRequestConfig()).then((res) => formatter(res.data.$data));
     }
 }
