@@ -106,7 +106,7 @@ class UserV1Courses extends UserV1OrganizationsOfType {
 
     async gradeSubmission(course_id: string, assignment_id: string, submission_id: string, score: number): Promise<boolean> {
         const body = { score };
-        return this.user.update(`/courses/${course_id}/assignments/${assignment_id}/${submission_id}/grade`, score);
+        return this.user.update(`/courses/${course_id}/assignments/${assignment_id}/${submission_id}/grade`, body);
     }
 }
 
