@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
     "test": "yarn build && yarn jest",
-    "format": "prettier --write \"lib/**/*.js\""
+    "format": "prettier --write \"lib/**/*.ts\""
   },
   "contributors": [
     "Dakota Gordon <dakota@ed.link>",

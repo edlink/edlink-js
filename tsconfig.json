@@ -5,6 +5,7 @@
     "strict": true,
     "outDir": "./dist",
     "incremental": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   }
 }

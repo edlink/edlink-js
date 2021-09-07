@@ -4,17 +4,18 @@ import axios, { AxiosRequestConfig } from 'axios';
 export { UserV1 } from './v1';
 
 export abstract class UserAPI extends BearerTokenAPI {
-
     protected constructor(public auth: Auth, private readonly version: APIVersion) {
         super(auth.access_token, `/${version}/my`);
     }
 
     protected override async getRequestConfig(): Promise<AxiosRequestConfig> {
-        if(this.auth.isExpired()) {
-            if(this.auth.canRefresh()) {
+        if (this.auth.isExpired()) {
+            if (this.auth.canRefresh()) {
                 await this.auth.refresh();
             } else {
-                throw new Error('The `access_token` for this user is expired. To automatically refresh, provide a `client_id` and `client_secret` when creating the Auth object.');
+                throw new Error(
+                    'The `access_token` for this user is expired. To automatically refresh, provide a `client_id` and `client_secret` when creating the Auth object.'
+                );
             }
         }
 
@@ -22,19 +23,24 @@ export abstract class UserAPI extends BearerTokenAPI {
             headers: {
                 authorization: `Bearer ${this.auth.access_token}`
             }
-        }
+        };
     }
 }
 
 export class Auth {
-    private constructor(public access_token: string, public refresh_token: string, public expires: Date, private client_id?: string, private client_secret?: string) {
-    }
+    private constructor(
+        public access_token: string,
+        public refresh_token: string,
+        public expires: Date,
+        private client_id?: string,
+        private client_secret?: string
+    ) {}
 
     /**
      * If necessary, refresh the access token.
      */
     public async refresh() {
-        if(!this.isExpired()) {
+        if (!this.isExpired()) {
             return;
         }
 
@@ -58,7 +64,7 @@ export class Auth {
 
     public isExpired(): boolean {
         // Check if the token is expired, or less than a minute away from expiring.
-        return Date.now() >= (this.expires.getTime() - 60 * 1000);
+        return Date.now() >= this.expires.getTime() - 60 * 1000;
     }
 
     /**
@@ -70,7 +76,9 @@ export class Auth {
         const response = await axios.post('https://ed.link/api/authentication/token', {
             code: authorization_code,
             grant_type: 'authorization_code',
-            client_id, client_secret, redirect_uri
+            client_id,
+            client_secret,
+            redirect_uri
         });
 
         return this.from(response.data, client_id, client_secret);
@@ -81,14 +89,18 @@ export class Auth {
      * and `client_secret`, the `access_token` will be automatically refreshed when appropriate.
      * @see https://ed.link/docs/guides/v1.0/user-authentication
      */
-    static async from(data: { access_token: string, refresh_token: string, expires_in?: number, expires?: Date }, client_id?: string, client_secret?: string): Promise<Auth> {
-        if(data.expires_in !== undefined) {
+    static async from(
+        data: { access_token: string; refresh_token: string; expires_in?: number; expires?: Date },
+        client_id?: string,
+        client_secret?: string
+    ): Promise<Auth> {
+        if (data.expires_in !== undefined) {
             const expiration = Date.now() + data.expires_in * 1000;
             return new Auth(data.access_token, data.refresh_token, new Date(expiration), client_id, client_secret);
-        } else if(data.expires !== undefined) {
+        } else if (data.expires !== undefined) {
             return new Auth(data.access_token, data.refresh_token, data.expires, client_id, client_secret);
         } else {
-            throw new Error('You must supply either an `expires` Date or `expires_in` milliseconds.')
+            throw new Error('You must supply either an `expires` Date or `expires_in` milliseconds.');
         }
     }
 }

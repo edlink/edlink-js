@@ -13,8 +13,8 @@ export abstract class BearerTokenAPI {
 
             // We include this to disable automatic JSON parsing by axios.
             // We want to use our generated Convert class instead.
-            transformResponse: res => res
-        })
+            transformResponse: (res) => res
+        });
     }
 
     protected async getRequestConfig(): Promise<AxiosRequestConfig> {
@@ -22,7 +22,7 @@ export abstract class BearerTokenAPI {
             headers: {
                 authorization: `Bearer ${this.bearer_token}`
             }
-        }
+        };
     }
 
     async *paginate<T>(url: string, formatter: (raw: any) => T, filter?: Filter, limit?: number, until?: (next: T) => boolean): AsyncGenerator<T> {
@@ -35,7 +35,7 @@ export abstract class BearerTokenAPI {
             for (const item of response.$data) {
                 const formatted = formatter(item);
 
-                if(until !== undefined && until(formatted)) {
+                if (until !== undefined && until(formatted)) {
                     return;
                 }
 

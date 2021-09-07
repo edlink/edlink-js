@@ -1,9 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {
-    EdlinkV1Provider,
-    EdlinkV1Permission
-} from '../../types/gen/ts/edlink';
+import { EdlinkV1Provider, EdlinkV1Permission } from '../../types/gen/ts/edlink';
 import axios from 'axios';
 import { GraphV1, GraphV2 } from './graph';
 import { MetaV1 } from './meta';
@@ -16,7 +13,10 @@ export default class Edlink {
     private constructor() {}
 
     static async up(): Promise<boolean> {
-        return axios.get('https://ed.link/api/up').then(n => n.status === 200).catch(err => false);
+        return axios
+            .get('https://ed.link/api/up')
+            .then((n) => n.status === 200)
+            .catch((err) => false);
     }
 
     public static v2 = {

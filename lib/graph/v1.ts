@@ -7,7 +7,7 @@ import {
     EdlinkV1Organization,
     EdlinkV1OrganizationType,
     EdlinkV1Term,
-    EdlinkV1Person,
+    EdlinkV1Person
 } from '../../../types/gen/ts/edlink';
 
 export class GraphV1 extends GraphAPI {
@@ -37,8 +37,7 @@ export class GraphV1 extends GraphAPI {
 }
 
 class GraphV1Organizations {
-    constructor(private graph: GraphV1) {
-    }
+    constructor(private graph: GraphV1) {}
 
     async *list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
         const url = organization_type ? `/${organization_type}s` : '/organizations';
@@ -60,8 +59,7 @@ class GraphV1Organizations {
 }
 
 class GraphV1OrganizationsOfType {
-    constructor(private organizations: GraphV1Organizations, private type: EdlinkV1OrganizationType) {
-    }
+    constructor(private organizations: GraphV1Organizations, private type: EdlinkV1OrganizationType) {}
 
     async *list(): AsyncGenerator<EdlinkV1Organization> {
         return this.organizations.list(this.type);
@@ -77,8 +75,7 @@ class GraphV1OrganizationsOfType {
 }
 
 class GraphV1Terms {
-    constructor(private graph: GraphV1) {
-    }
+    constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Term> {
         return this.graph.paginate('/terms', Convert.toEdlinkV1Term);
@@ -90,8 +87,7 @@ class GraphV1Terms {
 }
 
 class GraphV1People {
-    constructor(private graph: GraphV1) {
-    }
+    constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Person> {
         return this.graph.paginate('/people', Convert.toEdlinkV1Person);
@@ -103,8 +99,7 @@ class GraphV1People {
 }
 
 class GraphV1Enrollments {
-    constructor(private graph: GraphV1) {
-    }
+    constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Enrollment> {
         return this.graph.paginate('/enrollments', Convert.toEdlinkV1Enrollment);
@@ -116,12 +111,11 @@ class GraphV1Enrollments {
 }
 
 class GraphV1Events {
-    constructor(private graph: GraphV1) {
-    }
+    constructor(private graph: GraphV1) {}
 
     async *list(since?: Date): AsyncGenerator<EdlinkV1Event> {
         return this.graph.paginate('/events', Convert.toEdlinkV1Event, undefined, undefined, (next) => {
-            if(since === undefined || next.created_date === undefined) {
+            if (since === undefined || next.created_date === undefined) {
                 return false;
             }
 

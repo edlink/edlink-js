@@ -40,10 +40,9 @@ export class GraphV2 extends GraphAPI {
 }
 
 class GraphV2Districts {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(): AsyncGenerator<EdlinkV2District> {
+    async *list(): AsyncGenerator<EdlinkV2District> {
         return this.graph.paginate('/districts', Convert.toEdlinkV2District);
     }
 
@@ -53,10 +52,9 @@ class GraphV2Districts {
 }
 
 class GraphV2Schools {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2School> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2School> {
         return this.graph.paginate('/schools', Convert.toEdlinkV2School, filter);
     }
 
@@ -66,10 +64,9 @@ class GraphV2Schools {
 }
 
 class GraphV2Classes {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Class> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Class> {
         return this.graph.paginate('/classes', Convert.toEdlinkV2Class, filter);
     }
 
@@ -77,32 +74,31 @@ class GraphV2Classes {
         return this.graph.fetch(`/classes/${class_id}`, Convert.toEdlinkV2Class);
     }
 
-    async* listSections(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
+    async *listSections(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
         return this.graph.paginate(`/classes/${class_id}/sections`, Convert.toEdlinkV2Section, filter);
     }
 
-    async* listEnrollments(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
+    async *listEnrollments(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
         return this.graph.paginate(`/classes/${class_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
-    async* listPeople(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listPeople(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/classes/${class_id}/people`, Convert.toEdlinkV2Person, filter);
     }
 
-    async* listTeachers(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listTeachers(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/classes/${class_id}/teachers`, Convert.toEdlinkV2Person, filter);
     }
 
-    async* listStudents(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listStudents(class_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/classes/${class_id}/students`, Convert.toEdlinkV2Person, filter);
     }
 }
 
 class GraphV2Sections {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Section> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Section> {
         return this.graph.paginate('/sections', Convert.toEdlinkV2Section, filter);
     }
 
@@ -110,28 +106,27 @@ class GraphV2Sections {
         return this.graph.fetch(`/sections/${section_id}`, Convert.toEdlinkV2Section);
     }
 
-    async* listEnrollments(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
+    async *listEnrollments(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
         return this.graph.paginate(`/sections/${section_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
-    async* listPeople(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listPeople(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/sections/${section_id}/people`, Convert.toEdlinkV2Person, filter);
     }
 
-    async* listTeachers(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listTeachers(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/sections/${section_id}/teachers`, Convert.toEdlinkV2Person, filter);
     }
 
-    async* listStudents(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *listStudents(section_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate(`/sections/${section_id}/students`, Convert.toEdlinkV2Person, filter);
     }
 }
 
 class GraphV2People {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Person> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Person> {
         return this.graph.paginate('/people', Convert.toEdlinkV2Person, filter);
     }
 
@@ -139,36 +134,35 @@ class GraphV2People {
         return this.graph.fetch(`/people/${person_id}`, Convert.toEdlinkV2Person);
     }
 
-    async* listEnrollments(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
+    async *listEnrollments(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
         return this.graph.paginate(`/people/${person_id}/enrollments`, Convert.toEdlinkV2Enrollment, filter);
     }
 
-    async* listDistricts(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2District> {
+    async *listDistricts(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2District> {
         return this.graph.paginate(`/people/${person_id}/districts`, Convert.toEdlinkV2District, filter);
     }
 
-    async* listSchools(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2School> {
+    async *listSchools(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2School> {
         return this.graph.paginate(`/people/${person_id}/schools`, Convert.toEdlinkV2School, filter);
     }
 
-    async* listClasses(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
+    async *listClasses(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
         return this.graph.paginate(`/people/${person_id}/classes`, Convert.toEdlinkV2Class, filter);
     }
 
-    async* listSections(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
+    async *listSections(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Section> {
         return this.graph.paginate(`/people/${person_id}/sections`, Convert.toEdlinkV2Section, filter);
     }
 
-    async* listAgents(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
+    async *listAgents(person_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
         return this.graph.paginate(`/people/${person_id}/agents`, Convert.toEdlinkV2Agent, filter);
     }
 }
 
 class GraphV2Enrollments {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Enrollment> {
         return this.graph.paginate<EdlinkV2Enrollment>('/enrollments', Convert.toEdlinkV2Enrollment, filter);
     }
 
@@ -178,10 +172,9 @@ class GraphV2Enrollments {
 }
 
 class GraphV2Courses {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Course> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Course> {
         return this.graph.paginate('/courses', Convert.toEdlinkV2Course, filter);
     }
 
@@ -189,16 +182,15 @@ class GraphV2Courses {
         return this.graph.fetch(`/courses/${course_id}`, Convert.toEdlinkV2Course);
     }
 
-    async* listClasses(course_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
+    async *listClasses(course_id: string, filter?: Filter): AsyncGenerator<EdlinkV2Class> {
         return this.graph.paginate(`/courses/${course_id}/classes`, Convert.toEdlinkV2Class, filter);
     }
 }
 
 class GraphV2Sessions {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Session> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Session> {
         return this.graph.paginate('/sessions', Convert.toEdlinkV2Session, filter);
     }
 
@@ -208,10 +200,9 @@ class GraphV2Sessions {
 }
 
 class GraphV2Agents {
-    constructor(private graph: GraphV2) {
-    }
+    constructor(private graph: GraphV2) {}
 
-    async* list(filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
+    async *list(filter?: Filter): AsyncGenerator<EdlinkV2Agent> {
         return this.graph.paginate('/agents', Convert.toEdlinkV2Agent, filter);
     }
 

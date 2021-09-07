@@ -1,10 +1,5 @@
 import { MetaAPI } from './index';
-import {
-    Convert,
-    EdlinkV1Integration,
-    EdlinkV1Provider,
-    EdlinkV1Permission
-} from '../../../types/gen/ts/edlink';
+import { Convert, EdlinkV1Integration, EdlinkV1Provider, EdlinkV1Permission } from '../../../types/gen/ts/edlink';
 
 export class MetaV1 extends MetaAPI {
     public integrations: MetaV1Integrations;
@@ -21,8 +16,7 @@ export class MetaV1 extends MetaAPI {
 }
 
 class MetaV1Integrations {
-    constructor(private meta: MetaV1) {
-    }
+    constructor(private meta: MetaV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Integration> {
         return this.meta.paginate('/integrations', Convert.toEdlinkV1Integration);
@@ -34,8 +28,7 @@ class MetaV1Integrations {
 }
 
 class MetaV1Providers {
-    constructor(private meta: MetaV1) {
-    }
+    constructor(private meta: MetaV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Provider> {
         return this.meta.paginate('/providers', Convert.toEdlinkV1Provider);
@@ -47,8 +40,7 @@ class MetaV1Providers {
 }
 
 class MetaV1Permissions {
-    constructor(private meta: MetaV1) {
-    }
+    constructor(private meta: MetaV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Permission> {
         return this.meta.paginate('/permissions', Convert.toEdlinkV1Permission);
