@@ -8,7 +8,7 @@ import {
     EdlinkV1OrganizationType,
     EdlinkV1Term,
     EdlinkV1Person
-} from '../../../types/gen/ts/edlink';
+} from '../edlink';
 
 export class GraphV1 extends GraphAPI {
     public organizations: GraphV1Organizations;
@@ -41,7 +41,7 @@ class GraphV1Organizations {
 
     async *list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
         const url = organization_type ? `/${organization_type}s` : '/organizations';
-        return this.graph.paginate<EdlinkV1Organization>(url, Convert.toEdlinkV1Organization);
+        return this.graph.paginate(url, Convert.toEdlinkV1Organization);
     }
 
     async fetch(organization_type: EdlinkV1OrganizationType, organization_id: string): Promise<EdlinkV1Organization> {

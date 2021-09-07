@@ -11,7 +11,7 @@ import {
     EdlinkV2School,
     EdlinkV2Section,
     EdlinkV2Session
-} from '../../../types/gen/ts/edlink';
+} from '../edlink';
 
 export class GraphV2 extends GraphAPI {
     public districts: GraphV2Districts;

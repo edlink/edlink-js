@@ -1,5 +1,5 @@
 import { MetaAPI } from './index';
-import { Convert, EdlinkV1Integration, EdlinkV1Provider, EdlinkV1Permission } from '../../../types/gen/ts/edlink';
+import { Convert, EdlinkV1Integration, EdlinkV1Provider, EdlinkV1Permission } from '../edlink';
 
 export class MetaV1 extends MetaAPI {
     public integrations: MetaV1Integrations;

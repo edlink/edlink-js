@@ -1,6 +1,5 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { EdlinkV1Provider, EdlinkV1Permission } from '../../types/gen/ts/edlink';
 import axios from 'axios';
 import { GraphV1, GraphV2 } from './graph';
 import { MetaV1 } from './meta';
@@ -8,6 +7,7 @@ import { Auth, UserV1 } from './user';
 
 export { Filter } from './filter';
 export { Auth } from './user';
+export * from './edlink';
 
 export default class Edlink {
     private constructor() {}
