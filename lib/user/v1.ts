@@ -14,7 +14,7 @@ export class UserV1 extends UserAPI {
     public organizations: UserV1Organizations;
     public schools: UserV1OrganizationsOfType;
     public sections: UserV1OrganizationsOfType;
-    public courses: UserV1OrganizationsOfType;
+    public courses: UserV1Courses;
 
     constructor(auth: Auth) {
         super(auth, 'v1');

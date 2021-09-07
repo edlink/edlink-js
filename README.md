@@ -1,11 +1,13 @@
 # edlink-js
-This Edlink JavaScript SDK can be used to accelerate your integration with the Edlink API.
+This Edlink JavaScript & TypeScript SDK can be used to accelerate your integration with the Edlink API.
 
 | API | v1 | v2 |
 |----|----|----|
 | Graph | ✅ | ✅ |
 | User | ✅ | ❌ |
 | Meta | ✅ | ❌ |
+
+Support for the Edlink User API v2 and Meta API v2 will be added when they are introduced. They are currently slated for Fall 2021.
 
 ## Quickstart Guide
 
@@ -45,7 +47,8 @@ for await (const person of graph.people.list()) {
 }
 
 // Loop through all objects with a filter applied.
-const filter = Filter.where('first_name', 'equals', 'Chris').and('last_name', 'is known');
+const filter = Filter.where('first_name', 'equals', 'Chris')
+    .and('last_name', 'is known');
 for await (const person of graph.people.list(filter)) {
     // Do something with each person. (You'll only get ones that match the filter.)
     console.log(person.last_name);
@@ -62,7 +65,7 @@ for await (const person of graph.people.list(filter)) {
 const { Edlink, Auth } = require('edlink-js');
 
 // Create an auth session. This will automatically refresh the access token
-// whenever it expires, so you never have to worry about it.
+// whenever it expires, so you won't have to worry about doing it yourself.
 const identity = await Auth.from({
     access_token: '<access token>',
     refresh_token: '<refresh token>',
@@ -71,8 +74,7 @@ const identity = await Auth.from({
 
 // You can also create an auth session directly from an SSO authorization code.
 // This is a shortcut for "Exchange the Code for Access and Refresh Tokens" in the
-// following guide:
-// https://ed.link/docs/guides/v1.0/authentication
+// following guide: https://ed.link/docs/guides/v1.0/authentication
 const identity = await Auth.fromCode(
     '<redirect uri>', // the redirect uri that you used to retrieve the code 
     '<authorization code>', // the `code` you received as a url parameter 
@@ -80,6 +82,12 @@ const identity = await Auth.fromCode(
 
 // Access the v1 User API using that identity.
 const user = Edlink.v1.user(identity);
+
+// Make calls as this user. Looping and fetching follows the same pattern as
+// the Graph and Meta APIs, but this API features additional endpoints that
+// support creating, updating, and grading for assignments and submissions.
+const course = await user.courses.fetch('<course id>');
+const successful = await user.courses.gradeSubmission(course.id, '<assignment id>', '<submission id>', 100);
 
 // Once you're done, make sure to persist the user's access token, refresh token
 // and expiration date to your own database-- they might have changed during this process.

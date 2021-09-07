@@ -29,7 +29,7 @@ export default class Edlink {
         graph(integration_access_token: string): GraphV1 {
             return new GraphV1(integration_access_token);
         },
-        user(auth: Auth): any {
+        user(auth: Auth): UserV1 {
             return new UserV1(auth);
         },
         meta(application_secret_key: string): MetaV1 {
