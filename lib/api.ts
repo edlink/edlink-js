@@ -54,7 +54,7 @@ export abstract class BearerTokenAPI {
         let next = `${url}?$page=1`;
 
         while (next) {
-            const response = await this.axios.get(url, await this.getRequestConfig()).then(n => n.data);
+            const response = await this.axios.get(url, await this.getRequestConfig()).then((n) => n.data);
 
             for (const item of response.$data) {
                 const formatted = formatter(item);
@@ -76,7 +76,7 @@ export abstract class BearerTokenAPI {
         const config = await this.getRequestConfig();
         config.data = body;
 
-        return this.axios.post(url, config).then(res => response_formatter(res.data.$data));
+        return this.axios.post(url, config).then((res) => response_formatter(res.data.$data));
     }
 
     // PUT
@@ -84,7 +84,7 @@ export abstract class BearerTokenAPI {
         const config = await this.getRequestConfig();
         config.data = body;
 
-        return this.axios.put(url, config).then(res => response_formatter ? response_formatter(res.data.$data) : res.status === 200);
+        return this.axios.put(url, config).then((res) => (response_formatter ? response_formatter(res.data.$data) : res.status === 200));
     }
 
     /**
@@ -92,6 +92,6 @@ export abstract class BearerTokenAPI {
      * @returns 204 if the assignment was successfully deleted
      */
     async delete(url: string): Promise<boolean> {
-        return this.axios.delete(url, await this.getRequestConfig()).then(res => res.status === 204);
+        return this.axios.delete(url, await this.getRequestConfig()).then((res) => res.status === 204);
     }
 }

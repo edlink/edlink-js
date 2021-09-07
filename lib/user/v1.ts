@@ -1,11 +1,13 @@
 import { Auth, UserAPI } from './index';
 import {
-    Convert, EdlinkV1Assignment,
+    Convert,
+    EdlinkV1Assignment,
     EdlinkV1Enrollment,
     EdlinkV1EnrollmentType,
     EdlinkV1Organization,
     EdlinkV1OrganizationType,
-    EdlinkV1Person, EdlinkV1Submission
+    EdlinkV1Person,
+    EdlinkV1Submission
 } from '../edlink';
 
 export class UserV1 extends UserAPI {
@@ -29,10 +31,9 @@ export class UserV1 extends UserAPI {
 }
 
 class UserV1Organizations {
-    constructor(private user: UserV1) {
-    }
+    constructor(private user: UserV1) {}
 
-    async* list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
+    async *list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
         const url = organization_type ? `/${organization_type}s` : '/organizations';
         return this.user.paginate<EdlinkV1Organization>(url, Convert.toEdlinkV1Organization);
     }
@@ -105,8 +106,6 @@ class UserV1Courses extends UserV1OrganizationsOfType {
     }
 
     async gradeSubmission(course_id: string, assignment_id: string, submission_id: string, score: number): Promise<boolean> {
-        const body = { score };
-        return this.user.update(`/courses/${course_id}/assignments/${assignment_id}/${submission_id}/grade`, body);
+        return this.user.update(`/courses/${course_id}/assignments/${assignment_id}/submissions/${submission_id}/grade`, { score });
     }
 }
-
