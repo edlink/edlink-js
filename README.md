@@ -1,5 +1,5 @@
 # edlink-js
-This Edlink JavaScript & TypeScript SDK can be used to accelerate your integration with the Edlink API.
+This Edlink JavaScript & TypeScript SDK is a NodeJS wrapper for the Edlink API.
 
 | API | v1 | v2 |
 |----|----|----|
