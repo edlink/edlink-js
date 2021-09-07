@@ -50,7 +50,48 @@ export abstract class BearerTokenAPI {
         }
     }
 
+    async *paginateModified<T>(url: string, formatter: (raw: any) => T, limit?: number): AsyncGenerator<T> {
+        let next = `${url}?$page=1`;
+
+        while (next) {
+            const response = await this.axios.get(url, await this.getRequestConfig()).then(n => n.data);
+
+            for (const item of response.$data) {
+                const formatted = formatter(item);
+
+                yield formatted;
+            }
+
+            next = response.$next;
+        }
+    }
+
+    // GET
     async fetch<T>(url: string, formatter: (raw: any) => T): Promise<T> {
         return this.axios.get(url, await this.getRequestConfig()).then((res) => formatter(res.data.$data));
+    }
+
+    // POST
+    async create<T>(url: string, body: any, response_formatter: (raw: any) => T): Promise<T> {
+        const config = await this.getRequestConfig();
+        config.data = body;
+
+        return this.axios.post(url, config).then(res => response_formatter(res.data.$data));
+    }
+
+    // PUT
+    async update<T>(url: string, body: any, response_formatter?: (raw: any) => T): Promise<T | boolean> {
+        const config = await this.getRequestConfig();
+        config.data = body;
+
+        return this.axios.put(url, config).then(res => response_formatter ? response_formatter(res.data.$data) : res.status === 200);
+    }
+
+    /**
+     * DELETE
+     * @returns 204 if the assignment was successfully deleted
+     */
+    async delete(url: string): Promise<boolean> {
+        return this.axios.delete(url, await this.getRequestConfig()).then(res => res.status === 204);
     }
 }
