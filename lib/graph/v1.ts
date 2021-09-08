@@ -41,11 +41,11 @@ class GraphV1Organizations {
 
     async *list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
         const url = organization_type ? `/${organization_type}s` : '/organizations';
-        return this.graph.paginate(url, Convert.toEdlinkV1Organization);
+        return this.graph.paginate(url, n => n as EdlinkV1Organization);
     }
 
     async fetch(organization_type: EdlinkV1OrganizationType, organization_id: string): Promise<EdlinkV1Organization> {
-        return this.graph.fetch(`/${organization_type}/${organization_id}`, Convert.toEdlinkV1Organization);
+        return this.graph.fetch(`/${organization_type}/${organization_id}`, n => n as EdlinkV1Organization);
     }
 
     async *listEnrollments(
@@ -54,7 +54,7 @@ class GraphV1Organizations {
         enrollment_type?: EdlinkV1EnrollmentType
     ): AsyncGenerator<EdlinkV1Enrollment> {
         const url = `/${organization_type}/${organization_id}/${enrollment_type ?? 'enrollments'}`;
-        return this.graph.paginate(url, Convert.toEdlinkV1Enrollment);
+        return this.graph.paginate(url, n => n as EdlinkV1Enrollment);
     }
 }
 
@@ -78,11 +78,11 @@ class GraphV1Terms {
     constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Term> {
-        return this.graph.paginate('/terms', Convert.toEdlinkV1Term);
+        return this.graph.paginate('/terms', n => n as EdlinkV1Term);
     }
 
     async fetch(term_id: string): Promise<EdlinkV1Term> {
-        return this.graph.fetch(`/terms/${term_id}`, Convert.toEdlinkV1Term);
+        return this.graph.fetch(`/terms/${term_id}`, n => n as EdlinkV1Term);
     }
 }
 
@@ -90,11 +90,11 @@ class GraphV1People {
     constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Person> {
-        return this.graph.paginate('/people', Convert.toEdlinkV1Person);
+        return this.graph.paginate('/people', n => n as EdlinkV1Person);
     }
 
     async fetch(person_id: string): Promise<EdlinkV1Person> {
-        return this.graph.fetch(`/people/${person_id}`, Convert.toEdlinkV1Person);
+        return this.graph.fetch(`/people/${person_id}`, n => n as EdlinkV1Person);
     }
 }
 
@@ -102,11 +102,11 @@ class GraphV1Enrollments {
     constructor(private graph: GraphV1) {}
 
     async *list(): AsyncGenerator<EdlinkV1Enrollment> {
-        return this.graph.paginate('/enrollments', Convert.toEdlinkV1Enrollment);
+        return this.graph.paginate('/enrollments', n => n as EdlinkV1Enrollment);
     }
 
     async fetch(enrollment_id: string): Promise<EdlinkV1Enrollment> {
-        return this.graph.fetch(`/enrollments/${enrollment_id}`, Convert.toEdlinkV1Enrollment);
+        return this.graph.fetch(`/enrollments/${enrollment_id}`, n => n as EdlinkV1Enrollment);
     }
 }
 
@@ -114,7 +114,7 @@ class GraphV1Events {
     constructor(private graph: GraphV1) {}
 
     async *list(since?: Date): AsyncGenerator<EdlinkV1Event> {
-        return this.graph.paginate('/events', Convert.toEdlinkV1Event, undefined, undefined, (next) => {
+        return this.graph.paginate('/events', n => n as EdlinkV1Event, undefined, undefined, (next) => {
             if (since === undefined || next.created_date === undefined) {
                 return false;
             }
@@ -125,6 +125,6 @@ class GraphV1Events {
     }
 
     async fetch(event_id: string): Promise<EdlinkV1Event> {
-        return this.graph.fetch(`/events/${event_id}`, Convert.toEdlinkV1Event);
+        return this.graph.fetch(`/events/${event_id}`, n => n as EdlinkV1Event);
     }
 }

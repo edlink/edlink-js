@@ -35,11 +35,11 @@ class UserV1Organizations {
 
     async *list(organization_type?: EdlinkV1OrganizationType): AsyncGenerator<EdlinkV1Organization> {
         const url = organization_type ? `/${organization_type}s` : '/organizations';
-        return this.user.paginate<EdlinkV1Organization>(url, Convert.toEdlinkV1Organization);
+        return this.user.paginate<EdlinkV1Organization>(url, n => n as EdlinkV1Organization);
     }
 
     async fetch(organization_type: EdlinkV1OrganizationType, organization_id: string): Promise<EdlinkV1Organization> {
-        return this.user.fetch(`/${organization_type}/${organization_id}`, Convert.toEdlinkV1Organization);
+        return this.user.fetch(`/${organization_type}/${organization_id}`, n => n as EdlinkV1Organization);
     }
 
     async *listEnrollments(
@@ -48,7 +48,7 @@ class UserV1Organizations {
         enrollment_type?: EdlinkV1EnrollmentType
     ): AsyncGenerator<EdlinkV1Enrollment> {
         const url = `/${organization_type}/${organization_id}/${enrollment_type ?? 'enrollments'}`;
-        return this.user.paginate(url, Convert.toEdlinkV1Enrollment);
+        return this.user.paginate(url, n => n as EdlinkV1Enrollment);
     }
 }
 
@@ -74,19 +74,19 @@ class UserV1Courses extends UserV1OrganizationsOfType {
     }
 
     async *listAssignments(course_id: string): AsyncGenerator<EdlinkV1Assignment> {
-        return this.user.paginateModified(`/courses/${course_id}/assignments`, Convert.toEdlinkV1Assignment);
+        return this.user.paginateModified(`/courses/${course_id}/assignments`, n => n as EdlinkV1Assignment);
     }
 
     async fetchAssignment(course_id: string, assignment_id: string): Promise<EdlinkV1Assignment> {
-        return this.user.fetch(`/courses/${course_id}/assignments/${assignment_id}`, Convert.toEdlinkV1Assignment);
+        return this.user.fetch(`/courses/${course_id}/assignments/${assignment_id}`, n => n as EdlinkV1Assignment);
     }
 
     async createAssignment(course_id: string, assignment: EdlinkV1Assignment): Promise<EdlinkV1Assignment> {
-        return this.user.create(`/courses/${course_id}/assignments`, assignment, Convert.toEdlinkV1Assignment);
+        return this.user.create(`/courses/${course_id}/assignments`, assignment, n => n as EdlinkV1Assignment);
     }
 
     async updateAssignment(course_id: string, assignment_id: string, assignment: EdlinkV1Assignment): Promise<EdlinkV1Assignment> {
-        return this.user.create(`/courses/${course_id}/assignments/${assignment_id}`, assignment, Convert.toEdlinkV1Assignment);
+        return this.user.create(`/courses/${course_id}/assignments/${assignment_id}`, assignment, n => n as EdlinkV1Assignment);
     }
 
     async deleteAssignment(course_id: string, assignment_id: string): Promise<boolean> {
@@ -94,15 +94,15 @@ class UserV1Courses extends UserV1OrganizationsOfType {
     }
 
     async *listSubmissions(course_id: string, assignment_id: string): AsyncGenerator<EdlinkV1Submission> {
-        return this.user.paginateModified(`/courses/${course_id}/assignments/${assignment_id}/submissions`, Convert.toEdlinkV1Submission);
+        return this.user.paginateModified(`/courses/${course_id}/assignments/${assignment_id}/submissions`, n => n as EdlinkV1Submission);
     }
 
     async fetchSubmission(course_id: string, assignment_id: string, submission_id: string): Promise<EdlinkV1Submission> {
-        return this.user.fetch(`/courses/${course_id}/assignments/${assignment_id}/submissions/${submission_id}`, Convert.toEdlinkV1Submission);
+        return this.user.fetch(`/courses/${course_id}/assignments/${assignment_id}/submissions/${submission_id}`, n => n as EdlinkV1Submission);
     }
 
     async createSubmission(course_id: string, assignment_id: string, submission: EdlinkV1Submission): Promise<EdlinkV1Submission> {
-        return this.user.create(`/courses/${course_id}/assignments/${assignment_id}`, submission, Convert.toEdlinkV1Submission);
+        return this.user.create(`/courses/${course_id}/assignments/${assignment_id}`, submission, n => n as EdlinkV1Submission);
     }
 
     async gradeSubmission(course_id: string, assignment_id: string, submission_id: string, score: number): Promise<boolean> {
