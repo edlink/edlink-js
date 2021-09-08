@@ -604,20 +604,10 @@ export interface EdlinkV2Course {
     updated_date?: Date;
 }
 
-export interface EdlinkV1OrganizationEnrollment {
-    end_date?: Date;
-    id?: string;
-    organization?: EdlinkV1Organization;
-    person?: PurpleV1Person;
-    source?: EdlinkV1OrganizationSource;
-    start_date?: Date;
-    type?: EdlinkV1EnrollmentType;
-}
-
 export interface EdlinkV1Organization {
     ancestry?: string[];
+    created_date?: Date;
     description?: string;
-    enrollments?: EdlinkV1OrganizationEnrollment[];
     icon_url?: string;
     id?: string;
     name?: string;
@@ -626,24 +616,7 @@ export interface EdlinkV1Organization {
     terms?: string[];
     time_zone?: string;
     type?: EdlinkV1OrganizationType;
-}
-
-export interface PurpleV1Person {
-    birthday?: Date;
-    display_name?: string;
-    email?: string;
-    first_name?: string;
-    gender?: string;
-    id?: string;
-    last_name?: string;
-    locale?: string;
-    middle_name?: string;
-    phone?: string;
-    picture_url?: string;
-    role?: EdlinkV2Role;
-    roles?: EdlinkV2Role[];
-    source?: EdlinkV1OrganizationSource;
-    time_zone?: string;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1OrganizationSource {
@@ -653,6 +626,111 @@ export interface EdlinkV1OrganizationSource {
     log_retention_time?: number;
     name?: string;
     status?: string;
+    updated_date?: Date;
+}
+
+export enum EdlinkV1OrganizationType {
+    Course = 'course',
+    District = 'district',
+    School = 'school',
+    Section = 'section'
+}
+
+export interface EdlinkV1Person {
+    birthday?: Date;
+    created_date?: Date;
+    display_name?: string;
+    email?: string;
+    first_name?: string;
+    gender?: string;
+    id?: string;
+    last_name?: string;
+    locale?: string;
+    location?: any;
+    middle_name?: string;
+    phone?: string;
+    picture_url?: string;
+    role?: EdlinkV2Role;
+    roles?: EdlinkV2Role[];
+    source?: EdlinkV1PersonSource;
+    time_zone?: string;
+    updated_date?: Date;
+}
+
+export interface EdlinkV1PersonSource {
+    created_date?: Date;
+    id?: string;
+    import_interval?: number;
+    log_retention_time?: number;
+    name?: string;
+    status?: string;
+    updated_date?: Date;
+}
+
+export interface EdlinkV1Term {
+    created_date?: Date;
+    end_date?: Date;
+    id?: string;
+    name?: string;
+    start_date?: Date;
+    updated_date?: Date;
+}
+
+export interface EdlinkV1Enrollment {
+    created_date?: Date;
+    end_date?: Date;
+    id?: string;
+    organization?: OrganizationClass;
+    person?: V1Person;
+    source?: OrganizationSource;
+    start_date?: Date;
+    type?: EdlinkV1EnrollmentType;
+    updated_date?: Date;
+}
+
+export interface OrganizationClass {
+    ancestry?: string[];
+    created_date?: Date;
+    description?: string;
+    icon_url?: string;
+    id?: string;
+    name?: string;
+    source?: OrganizationSource;
+    state?: string;
+    terms?: string[];
+    time_zone?: string;
+    type?: EdlinkV1OrganizationType;
+    updated_date?: Date;
+}
+
+export interface OrganizationSource {
+    created_date?: Date;
+    id?: string;
+    import_interval?: number;
+    log_retention_time?: number;
+    name?: string;
+    status?: string;
+    updated_date?: Date;
+}
+
+export interface V1Person {
+    birthday?: Date;
+    created_date?: Date;
+    display_name?: string;
+    email?: string;
+    first_name?: string;
+    gender?: string;
+    id?: string;
+    last_name?: string;
+    locale?: string;
+    location?: any;
+    middle_name?: string;
+    phone?: string;
+    picture_url?: string;
+    role?: EdlinkV2Role;
+    roles?: EdlinkV2Role[];
+    source?: OrganizationSource;
+    time_zone?: string;
     updated_date?: Date;
 }
 
@@ -669,102 +747,9 @@ export enum EdlinkV1EnrollmentType {
     Teacher = 'teacher'
 }
 
-export enum EdlinkV1OrganizationType {
-    Course = 'course',
-    District = 'district',
-    School = 'school',
-    Section = 'section'
-}
-
-export interface EdlinkV1Person {
-    birthday?: Date;
-    display_name?: string;
-    email?: string;
-    first_name?: string;
-    gender?: string;
-    id?: string;
-    last_name?: string;
-    locale?: string;
-    middle_name?: string;
-    phone?: string;
-    picture_url?: string;
-    role?: EdlinkV2Role;
-    roles?: EdlinkV2Role[];
-    source?: EdlinkV1PersonSource;
-    time_zone?: string;
-}
-
-export interface EdlinkV1PersonSource {
-    created_date?: Date;
-    id?: string;
-    import_interval?: number;
-    log_retention_time?: number;
-    name?: string;
-    status?: string;
-    updated_date?: Date;
-}
-
-export interface EdlinkV1Term {
-    end_date?: Date;
-    id?: string;
-    name?: string;
-    start_date?: Date;
-}
-
-export interface EdlinkV1EnrollmentOrganization {
-    ancestry?: string[];
-    description?: string;
-    enrollments?: EdlinkV1Enrollment[];
-    icon_url?: string;
-    id?: string;
-    name?: string;
-    source?: EdlinkV1EnrollmentSource;
-    state?: string;
-    terms?: string[];
-    time_zone?: string;
-    type?: EdlinkV1OrganizationType;
-}
-
-export interface EdlinkV1Enrollment {
-    end_date?: Date;
-    id?: string;
-    organization?: EdlinkV1EnrollmentOrganization;
-    person?: EdlinkV1EnrollmentPerson;
-    source?: EdlinkV1EnrollmentSource;
-    start_date?: Date;
-    type?: EdlinkV1EnrollmentType;
-}
-
-export interface EdlinkV1EnrollmentSource {
-    created_date?: Date;
-    id?: string;
-    import_interval?: number;
-    log_retention_time?: number;
-    name?: string;
-    status?: string;
-    updated_date?: Date;
-}
-
-export interface EdlinkV1EnrollmentPerson {
-    birthday?: Date;
-    display_name?: string;
-    email?: string;
-    first_name?: string;
-    gender?: string;
-    id?: string;
-    last_name?: string;
-    locale?: string;
-    middle_name?: string;
-    phone?: string;
-    picture_url?: string;
-    role?: EdlinkV2Role;
-    roles?: EdlinkV2Role[];
-    source?: EdlinkV1EnrollmentSource;
-    time_zone?: string;
-}
-
 export interface EdlinkV1Assignment {
     course?: EdlinkV1AssignmentCourse;
+    created_date?: Date;
     description?: string;
     description_plaintext?: string;
     display_date?: Date;
@@ -779,23 +764,14 @@ export interface EdlinkV1Assignment {
     students?: string[];
     submission_types?: string[];
     title?: string;
+    updated_date?: Date;
     url?: string;
-}
-
-export interface PurpleV1Enrollment {
-    end_date?: Date;
-    id?: string;
-    organization?: EdlinkV1AssignmentCourse;
-    person?: FluffyV1Person;
-    source?: EdlinkV1AssignmentSource;
-    start_date?: Date;
-    type?: EdlinkV1EnrollmentType;
 }
 
 export interface EdlinkV1AssignmentCourse {
     ancestry?: string[];
+    created_date?: Date;
     description?: string;
-    enrollments?: PurpleV1Enrollment[];
     icon_url?: string;
     id?: string;
     name?: string;
@@ -804,24 +780,7 @@ export interface EdlinkV1AssignmentCourse {
     terms?: string[];
     time_zone?: string;
     type?: EdlinkV1OrganizationType;
-}
-
-export interface FluffyV1Person {
-    birthday?: Date;
-    display_name?: string;
-    email?: string;
-    first_name?: string;
-    gender?: string;
-    id?: string;
-    last_name?: string;
-    locale?: string;
-    middle_name?: string;
-    phone?: string;
-    picture_url?: string;
-    role?: EdlinkV2Role;
-    roles?: EdlinkV2Role[];
-    source?: EdlinkV1AssignmentSource;
-    time_zone?: string;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1AssignmentSource {
@@ -846,11 +805,13 @@ export interface EdlinkV1Submission {
     score?: number;
     source?: AssignmentSource;
     type?: string;
+    updated_date?: Date;
     url?: string;
 }
 
 export interface V1Assignment {
     course?: AssignmentCourse;
+    created_date?: Date;
     description?: string;
     description_plaintext?: string;
     display_date?: Date;
@@ -865,23 +826,14 @@ export interface V1Assignment {
     students?: string[];
     submission_types?: string[];
     title?: string;
+    updated_date?: Date;
     url?: string;
-}
-
-export interface FluffyV1Enrollment {
-    end_date?: Date;
-    id?: string;
-    organization?: AssignmentCourse;
-    person?: TentacledV1Person;
-    source?: AssignmentSource;
-    start_date?: Date;
-    type?: EdlinkV1EnrollmentType;
 }
 
 export interface AssignmentCourse {
     ancestry?: string[];
+    created_date?: Date;
     description?: string;
-    enrollments?: FluffyV1Enrollment[];
     icon_url?: string;
     id?: string;
     name?: string;
@@ -890,24 +842,7 @@ export interface AssignmentCourse {
     terms?: string[];
     time_zone?: string;
     type?: EdlinkV1OrganizationType;
-}
-
-export interface TentacledV1Person {
-    birthday?: Date;
-    display_name?: string;
-    email?: string;
-    first_name?: string;
-    gender?: string;
-    id?: string;
-    last_name?: string;
-    locale?: string;
-    middle_name?: string;
-    phone?: string;
-    picture_url?: string;
-    role?: EdlinkV2Role;
-    roles?: EdlinkV2Role[];
-    source?: AssignmentSource;
-    time_zone?: string;
+    updated_date?: Date;
 }
 
 export interface AssignmentSource {
@@ -924,21 +859,25 @@ export interface EdlinkV1Provider {
     allows_data_sync?: boolean;
     application?: string;
     configuration?: string;
+    created_date?: Date;
     icon_url?: string;
     id?: string;
     name?: string;
     requires_administrator_consent?: boolean;
     requires_administrator_login?: boolean;
     requires_remote_configuration?: boolean;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1Permission {
     active?: boolean;
+    created_date?: Date;
     description?: string;
     group?: string;
     id?: string;
     name?: string;
     scoped?: boolean;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1Integration {
@@ -959,12 +898,14 @@ export interface V1Provider {
     allows_data_sync?: boolean;
     application?: string;
     configuration?: string;
+    created_date?: Date;
     icon_url?: string;
     id?: string;
     name?: string;
     requires_administrator_consent?: boolean;
     requires_administrator_login?: boolean;
     requires_remote_configuration?: boolean;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1IntegrationSource {
@@ -987,12 +928,14 @@ export interface V1Team {
     alias?: string;
     city?: string;
     country?: string;
+    created_date?: Date;
     id?: string;
     name?: string;
     state?: string;
     street_address?: string;
     type?: string;
     unit_number?: string;
+    updated_date?: Date;
     zip?: string;
 }
 
@@ -1000,12 +943,14 @@ export interface EdlinkV1Team {
     alias?: string;
     city?: string;
     country?: string;
+    created_date?: Date;
     id?: string;
     name?: string;
     state?: string;
     street_address?: string;
     type?: string;
     unit_number?: string;
+    updated_date?: Date;
     zip?: string;
 }
 
@@ -1014,6 +959,7 @@ export interface EdlinkV1Event {
     data?: any;
     id?: string;
     type?: string;
+    updated_date?: Date;
 }
 
 export interface EdlinkV1Source {
@@ -1676,23 +1622,11 @@ const typeMap: any = {
         ],
         false
     ),
-    EdlinkV1OrganizationEnrollment: o(
-        [
-            { json: 'end_date', js: 'end_date', typ: u(undefined, Date) },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'organization', js: 'organization', typ: u(undefined, r('EdlinkV1Organization')) },
-            { json: 'person', js: 'person', typ: u(undefined, r('PurpleV1Person')) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1OrganizationSource')) },
-            { json: 'start_date', js: 'start_date', typ: u(undefined, Date) },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1EnrollmentType')) }
-        ],
-        false
-    ),
     EdlinkV1Organization: o(
         [
             { json: 'ancestry', js: 'ancestry', typ: u(undefined, a('')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
-            { json: 'enrollments', js: 'enrollments', typ: u(undefined, a(r('EdlinkV1OrganizationEnrollment'))) },
             { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1700,27 +1634,8 @@ const typeMap: any = {
             { json: 'state', js: 'state', typ: u(undefined, '') },
             { json: 'terms', js: 'terms', typ: u(undefined, a('')) },
             { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) }
-        ],
-        false
-    ),
-    PurpleV1Person: o(
-        [
-            { json: 'birthday', js: 'birthday', typ: u(undefined, Date) },
-            { json: 'display_name', js: 'display_name', typ: u(undefined, '') },
-            { json: 'email', js: 'email', typ: u(undefined, '') },
-            { json: 'first_name', js: 'first_name', typ: u(undefined, '') },
-            { json: 'gender', js: 'gender', typ: u(undefined, '') },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'last_name', js: 'last_name', typ: u(undefined, '') },
-            { json: 'locale', js: 'locale', typ: u(undefined, '') },
-            { json: 'middle_name', js: 'middle_name', typ: u(undefined, '') },
-            { json: 'phone', js: 'phone', typ: u(undefined, '') },
-            { json: 'picture_url', js: 'picture_url', typ: u(undefined, '') },
-            { json: 'role', js: 'role', typ: u(undefined, r('EdlinkV2Role')) },
-            { json: 'roles', js: 'roles', typ: u(undefined, a(r('EdlinkV2Role'))) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1OrganizationSource')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') }
+            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -1739,6 +1654,7 @@ const typeMap: any = {
     EdlinkV1Person: o(
         [
             { json: 'birthday', js: 'birthday', typ: u(undefined, Date) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'display_name', js: 'display_name', typ: u(undefined, '') },
             { json: 'email', js: 'email', typ: u(undefined, '') },
             { json: 'first_name', js: 'first_name', typ: u(undefined, '') },
@@ -1746,13 +1662,15 @@ const typeMap: any = {
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'last_name', js: 'last_name', typ: u(undefined, '') },
             { json: 'locale', js: 'locale', typ: u(undefined, '') },
+            { json: 'location', js: 'location', typ: u(undefined, 'any') },
             { json: 'middle_name', js: 'middle_name', typ: u(undefined, '') },
             { json: 'phone', js: 'phone', typ: u(undefined, '') },
             { json: 'picture_url', js: 'picture_url', typ: u(undefined, '') },
             { json: 'role', js: 'role', typ: u(undefined, r('EdlinkV2Role')) },
             { json: 'roles', js: 'roles', typ: u(undefined, a(r('EdlinkV2Role'))) },
             { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1PersonSource')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') }
+            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -1770,42 +1688,47 @@ const typeMap: any = {
     ),
     EdlinkV1Term: o(
         [
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'end_date', js: 'end_date', typ: u(undefined, Date) },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
-            { json: 'start_date', js: 'start_date', typ: u(undefined, Date) }
-        ],
-        false
-    ),
-    EdlinkV1EnrollmentOrganization: o(
-        [
-            { json: 'ancestry', js: 'ancestry', typ: u(undefined, a('')) },
-            { json: 'description', js: 'description', typ: u(undefined, '') },
-            { json: 'enrollments', js: 'enrollments', typ: u(undefined, a(r('EdlinkV1Enrollment'))) },
-            { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'name', js: 'name', typ: u(undefined, '') },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1EnrollmentSource')) },
-            { json: 'state', js: 'state', typ: u(undefined, '') },
-            { json: 'terms', js: 'terms', typ: u(undefined, a('')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) }
+            { json: 'start_date', js: 'start_date', typ: u(undefined, Date) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
     EdlinkV1Enrollment: o(
         [
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'end_date', js: 'end_date', typ: u(undefined, Date) },
             { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'organization', js: 'organization', typ: u(undefined, r('EdlinkV1EnrollmentOrganization')) },
-            { json: 'person', js: 'person', typ: u(undefined, r('EdlinkV1EnrollmentPerson')) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1EnrollmentSource')) },
+            { json: 'organization', js: 'organization', typ: u(undefined, r('OrganizationClass')) },
+            { json: 'person', js: 'person', typ: u(undefined, r('V1Person')) },
+            { json: 'source', js: 'source', typ: u(undefined, r('OrganizationSource')) },
             { json: 'start_date', js: 'start_date', typ: u(undefined, Date) },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1EnrollmentType')) }
+            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1EnrollmentType')) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
-    EdlinkV1EnrollmentSource: o(
+    OrganizationClass: o(
+        [
+            { json: 'ancestry', js: 'ancestry', typ: u(undefined, a('')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
+            { json: 'description', js: 'description', typ: u(undefined, '') },
+            { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
+            { json: 'id', js: 'id', typ: u(undefined, '') },
+            { json: 'name', js: 'name', typ: u(undefined, '') },
+            { json: 'source', js: 'source', typ: u(undefined, r('OrganizationSource')) },
+            { json: 'state', js: 'state', typ: u(undefined, '') },
+            { json: 'terms', js: 'terms', typ: u(undefined, a('')) },
+            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
+            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
+        ],
+        false
+    ),
+    OrganizationSource: o(
         [
             { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'id', js: 'id', typ: u(undefined, '') },
@@ -1817,9 +1740,10 @@ const typeMap: any = {
         ],
         false
     ),
-    EdlinkV1EnrollmentPerson: o(
+    V1Person: o(
         [
             { json: 'birthday', js: 'birthday', typ: u(undefined, Date) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'display_name', js: 'display_name', typ: u(undefined, '') },
             { json: 'email', js: 'email', typ: u(undefined, '') },
             { json: 'first_name', js: 'first_name', typ: u(undefined, '') },
@@ -1827,19 +1751,22 @@ const typeMap: any = {
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'last_name', js: 'last_name', typ: u(undefined, '') },
             { json: 'locale', js: 'locale', typ: u(undefined, '') },
+            { json: 'location', js: 'location', typ: u(undefined, 'any') },
             { json: 'middle_name', js: 'middle_name', typ: u(undefined, '') },
             { json: 'phone', js: 'phone', typ: u(undefined, '') },
             { json: 'picture_url', js: 'picture_url', typ: u(undefined, '') },
             { json: 'role', js: 'role', typ: u(undefined, r('EdlinkV2Role')) },
             { json: 'roles', js: 'roles', typ: u(undefined, a(r('EdlinkV2Role'))) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1EnrollmentSource')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') }
+            { json: 'source', js: 'source', typ: u(undefined, r('OrganizationSource')) },
+            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
     EdlinkV1Assignment: o(
         [
             { json: 'course', js: 'course', typ: u(undefined, r('EdlinkV1AssignmentCourse')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
             { json: 'description_plaintext', js: 'description_plaintext', typ: u(undefined, '') },
             { json: 'display_date', js: 'display_date', typ: u(undefined, Date) },
@@ -1854,27 +1781,16 @@ const typeMap: any = {
             { json: 'students', js: 'students', typ: u(undefined, a('')) },
             { json: 'submission_types', js: 'submission_types', typ: u(undefined, a('')) },
             { json: 'title', js: 'title', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) },
             { json: 'url', js: 'url', typ: u(undefined, '') }
-        ],
-        false
-    ),
-    PurpleV1Enrollment: o(
-        [
-            { json: 'end_date', js: 'end_date', typ: u(undefined, Date) },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'organization', js: 'organization', typ: u(undefined, r('EdlinkV1AssignmentCourse')) },
-            { json: 'person', js: 'person', typ: u(undefined, r('FluffyV1Person')) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1AssignmentSource')) },
-            { json: 'start_date', js: 'start_date', typ: u(undefined, Date) },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1EnrollmentType')) }
         ],
         false
     ),
     EdlinkV1AssignmentCourse: o(
         [
             { json: 'ancestry', js: 'ancestry', typ: u(undefined, a('')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
-            { json: 'enrollments', js: 'enrollments', typ: u(undefined, a(r('PurpleV1Enrollment'))) },
             { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1882,27 +1798,8 @@ const typeMap: any = {
             { json: 'state', js: 'state', typ: u(undefined, '') },
             { json: 'terms', js: 'terms', typ: u(undefined, a('')) },
             { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) }
-        ],
-        false
-    ),
-    FluffyV1Person: o(
-        [
-            { json: 'birthday', js: 'birthday', typ: u(undefined, Date) },
-            { json: 'display_name', js: 'display_name', typ: u(undefined, '') },
-            { json: 'email', js: 'email', typ: u(undefined, '') },
-            { json: 'first_name', js: 'first_name', typ: u(undefined, '') },
-            { json: 'gender', js: 'gender', typ: u(undefined, '') },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'last_name', js: 'last_name', typ: u(undefined, '') },
-            { json: 'locale', js: 'locale', typ: u(undefined, '') },
-            { json: 'middle_name', js: 'middle_name', typ: u(undefined, '') },
-            { json: 'phone', js: 'phone', typ: u(undefined, '') },
-            { json: 'picture_url', js: 'picture_url', typ: u(undefined, '') },
-            { json: 'role', js: 'role', typ: u(undefined, r('EdlinkV2Role')) },
-            { json: 'roles', js: 'roles', typ: u(undefined, a(r('EdlinkV2Role'))) },
-            { json: 'source', js: 'source', typ: u(undefined, r('EdlinkV1AssignmentSource')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') }
+            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -1931,6 +1828,7 @@ const typeMap: any = {
             { json: 'score', js: 'score', typ: u(undefined, 3.14) },
             { json: 'source', js: 'source', typ: u(undefined, r('AssignmentSource')) },
             { json: 'type', js: 'type', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) },
             { json: 'url', js: 'url', typ: u(undefined, '') }
         ],
         false
@@ -1938,6 +1836,7 @@ const typeMap: any = {
     V1Assignment: o(
         [
             { json: 'course', js: 'course', typ: u(undefined, r('AssignmentCourse')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
             { json: 'description_plaintext', js: 'description_plaintext', typ: u(undefined, '') },
             { json: 'display_date', js: 'display_date', typ: u(undefined, Date) },
@@ -1952,27 +1851,16 @@ const typeMap: any = {
             { json: 'students', js: 'students', typ: u(undefined, a('')) },
             { json: 'submission_types', js: 'submission_types', typ: u(undefined, a('')) },
             { json: 'title', js: 'title', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) },
             { json: 'url', js: 'url', typ: u(undefined, '') }
-        ],
-        false
-    ),
-    FluffyV1Enrollment: o(
-        [
-            { json: 'end_date', js: 'end_date', typ: u(undefined, Date) },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'organization', js: 'organization', typ: u(undefined, r('AssignmentCourse')) },
-            { json: 'person', js: 'person', typ: u(undefined, r('TentacledV1Person')) },
-            { json: 'source', js: 'source', typ: u(undefined, r('AssignmentSource')) },
-            { json: 'start_date', js: 'start_date', typ: u(undefined, Date) },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1EnrollmentType')) }
         ],
         false
     ),
     AssignmentCourse: o(
         [
             { json: 'ancestry', js: 'ancestry', typ: u(undefined, a('')) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
-            { json: 'enrollments', js: 'enrollments', typ: u(undefined, a(r('FluffyV1Enrollment'))) },
             { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -1980,27 +1868,8 @@ const typeMap: any = {
             { json: 'state', js: 'state', typ: u(undefined, '') },
             { json: 'terms', js: 'terms', typ: u(undefined, a('')) },
             { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') },
-            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) }
-        ],
-        false
-    ),
-    TentacledV1Person: o(
-        [
-            { json: 'birthday', js: 'birthday', typ: u(undefined, Date) },
-            { json: 'display_name', js: 'display_name', typ: u(undefined, '') },
-            { json: 'email', js: 'email', typ: u(undefined, '') },
-            { json: 'first_name', js: 'first_name', typ: u(undefined, '') },
-            { json: 'gender', js: 'gender', typ: u(undefined, '') },
-            { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'last_name', js: 'last_name', typ: u(undefined, '') },
-            { json: 'locale', js: 'locale', typ: u(undefined, '') },
-            { json: 'middle_name', js: 'middle_name', typ: u(undefined, '') },
-            { json: 'phone', js: 'phone', typ: u(undefined, '') },
-            { json: 'picture_url', js: 'picture_url', typ: u(undefined, '') },
-            { json: 'role', js: 'role', typ: u(undefined, r('EdlinkV2Role')) },
-            { json: 'roles', js: 'roles', typ: u(undefined, a(r('EdlinkV2Role'))) },
-            { json: 'source', js: 'source', typ: u(undefined, r('AssignmentSource')) },
-            { json: 'time_zone', js: 'time_zone', typ: u(undefined, '') }
+            { json: 'type', js: 'type', typ: u(undefined, r('EdlinkV1OrganizationType')) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -2021,23 +1890,27 @@ const typeMap: any = {
             { json: 'allows_data_sync', js: 'allows_data_sync', typ: u(undefined, true) },
             { json: 'application', js: 'application', typ: u(undefined, '') },
             { json: 'configuration', js: 'configuration', typ: u(undefined, '') },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
             { json: 'requires_administrator_consent', js: 'requires_administrator_consent', typ: u(undefined, true) },
             { json: 'requires_administrator_login', js: 'requires_administrator_login', typ: u(undefined, true) },
-            { json: 'requires_remote_configuration', js: 'requires_remote_configuration', typ: u(undefined, true) }
+            { json: 'requires_remote_configuration', js: 'requires_remote_configuration', typ: u(undefined, true) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
     EdlinkV1Permission: o(
         [
             { json: 'active', js: 'active', typ: u(undefined, true) },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'description', js: 'description', typ: u(undefined, '') },
             { json: 'group', js: 'group', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
-            { json: 'scoped', js: 'scoped', typ: u(undefined, true) }
+            { json: 'scoped', js: 'scoped', typ: u(undefined, true) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -2062,12 +1935,14 @@ const typeMap: any = {
             { json: 'allows_data_sync', js: 'allows_data_sync', typ: u(undefined, true) },
             { json: 'application', js: 'application', typ: u(undefined, '') },
             { json: 'configuration', js: 'configuration', typ: u(undefined, '') },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'icon_url', js: 'icon_url', typ: u(undefined, '') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
             { json: 'requires_administrator_consent', js: 'requires_administrator_consent', typ: u(undefined, true) },
             { json: 'requires_administrator_login', js: 'requires_administrator_login', typ: u(undefined, true) },
-            { json: 'requires_remote_configuration', js: 'requires_remote_configuration', typ: u(undefined, true) }
+            { json: 'requires_remote_configuration', js: 'requires_remote_configuration', typ: u(undefined, true) },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -2088,12 +1963,14 @@ const typeMap: any = {
             { json: 'alias', js: 'alias', typ: u(undefined, '') },
             { json: 'city', js: 'city', typ: u(undefined, '') },
             { json: 'country', js: 'country', typ: u(undefined, '') },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
             { json: 'state', js: 'state', typ: u(undefined, '') },
             { json: 'street_address', js: 'street_address', typ: u(undefined, '') },
             { json: 'type', js: 'type', typ: u(undefined, '') },
             { json: 'unit_number', js: 'unit_number', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) },
             { json: 'zip', js: 'zip', typ: u(undefined, '') }
         ],
         false
@@ -2103,12 +1980,14 @@ const typeMap: any = {
             { json: 'alias', js: 'alias', typ: u(undefined, '') },
             { json: 'city', js: 'city', typ: u(undefined, '') },
             { json: 'country', js: 'country', typ: u(undefined, '') },
+            { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'id', js: 'id', typ: u(undefined, '') },
             { json: 'name', js: 'name', typ: u(undefined, '') },
             { json: 'state', js: 'state', typ: u(undefined, '') },
             { json: 'street_address', js: 'street_address', typ: u(undefined, '') },
             { json: 'type', js: 'type', typ: u(undefined, '') },
             { json: 'unit_number', js: 'unit_number', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) },
             { json: 'zip', js: 'zip', typ: u(undefined, '') }
         ],
         false
@@ -2118,7 +1997,8 @@ const typeMap: any = {
             { json: 'created_date', js: 'created_date', typ: u(undefined, Date) },
             { json: 'data', js: 'data', typ: u(undefined, 'any') },
             { json: 'id', js: 'id', typ: u(undefined, '') },
-            { json: 'type', js: 'type', typ: u(undefined, '') }
+            { json: 'type', js: 'type', typ: u(undefined, '') },
+            { json: 'updated_date', js: 'updated_date', typ: u(undefined, Date) }
         ],
         false
     ),
@@ -2235,6 +2115,7 @@ const typeMap: any = {
     ],
     EdlinkV2SessionState: ['active', 'completed', 'upcoming'],
     EdlinkV2SessionType: ['grading_period', 'school_year', 'semester', 'term'],
+    EdlinkV1OrganizationType: ['course', 'district', 'school', 'section'],
     EdlinkV1EnrollmentType: [
         'administrator',
         'aide',
@@ -2247,6 +2128,5 @@ const typeMap: any = {
         'ta',
         'teacher'
     ],
-    EdlinkV1OrganizationType: ['course', 'district', 'school', 'section'],
     EdlinkV1IntegrationStatus: ['active', 'disabled', 'inactive']
 };

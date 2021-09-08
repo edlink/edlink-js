@@ -26,7 +26,7 @@ export class UserV1 extends UserAPI {
     }
 
     async profile(): Promise<EdlinkV1Person> {
-        return this.fetch('/profile', n => n as EdlinkV1Person);
+        return this.fetch('/profile', (n) => n as EdlinkV1Person);
     }
 }
 

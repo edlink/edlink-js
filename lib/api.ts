@@ -80,7 +80,9 @@ export abstract class BearerTokenAPI {
         const config = await this.getRequestConfig();
         config.data = body;
 
-        return this.axios.put(url, config).then((res) => (response_formatter ? response_formatter(JSON.stringify(res.data.$data)) : res.status === 200));
+        return this.axios
+            .put(url, config)
+            .then((res) => (response_formatter ? response_formatter(JSON.stringify(res.data.$data)) : res.status === 200));
     }
 
     /**
