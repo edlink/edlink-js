@@ -80,7 +80,7 @@ const identity = await Auth.from({
     access_token: '<access token>',
     refresh_token: '<refresh token>',
     expires: new Date('2021-09-07T16:39:15Z')
-}, '<client id>', '<client secret>');
+}, '<application id>', '<application secret>');
 
 // You can also create an auth session directly from an SSO authorization code.
 // This is a shortcut for "Exchange the Code for Access and Refresh Tokens" in the
@@ -88,7 +88,7 @@ const identity = await Auth.from({
 const identity = await Auth.fromCode(
     '<redirect uri>', // the redirect uri that you used to retrieve the code 
     '<authorization code>', // the `code` you received as a url parameter 
-    '<client id>', '<client secret>');
+    '<application id>', '<application secret>');
 
 // Access the v1 User API using that identity.
 const user = Edlink.v1.user(identity);

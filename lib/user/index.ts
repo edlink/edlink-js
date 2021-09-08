@@ -1,8 +1,6 @@
 import { BearerTokenAPI, APIVersion } from '../api';
 import axios, { AxiosRequestConfig } from 'axios';
 
-export { UserV1 } from './v1';
-
 export abstract class UserAPI extends BearerTokenAPI {
     protected constructor(public auth: Auth, private readonly version: APIVersion) {
         super(auth.access_token, `/${version}/my`);

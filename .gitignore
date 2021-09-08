@@ -39,3 +39,4 @@ deploy.sh
 
 
 /dist/
+/lib/keys/

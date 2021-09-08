@@ -1,15 +1,16 @@
 // noinspection JSUnusedGlobalSymbols
 
 import axios from 'axios';
-import { GraphV1, GraphV2 } from './graph';
-import { MetaV1 } from './meta';
-import { Auth, UserV1 } from './user';
+import { GraphV2 } from './graph/v2';
+import { GraphV1 } from './graph/v1';
+import { UserV1 } from './user/v1';
+import { MetaV1 } from './meta/v1';
+import { Auth } from './user';
 
 export { Filter } from './filter';
 export { Auth } from './user';
-export * from './edlink';
 
-export default class Edlink {
+export class Edlink {
     private constructor() {}
 
     static async up(): Promise<boolean> {
