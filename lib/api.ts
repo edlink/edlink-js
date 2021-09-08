@@ -9,11 +9,7 @@ export abstract class BearerTokenAPI {
 
     protected constructor(private readonly bearer_token: string, private readonly url: string) {
         this.axios = axios.create({
-            baseURL: join(`https://ed.link/api/`, url),
-
-            // We include this to disable automatic JSON parsing by axios.
-            // We want to use our generated Convert class instead.
-            transformResponse: (res) => res
+            baseURL: join(`https://ed.link/api/`, url)
         });
     }
 
@@ -33,7 +29,7 @@ export abstract class BearerTokenAPI {
             const response = await this.axios.get(url, await this.getRequestConfig()).then((n) => n.data);
 
             for (const item of response.$data) {
-                const formatted = formatter(item);
+                const formatted = formatter(JSON.stringify(item));
 
                 if (until !== undefined && until(formatted)) {
                     return;
@@ -57,7 +53,7 @@ export abstract class BearerTokenAPI {
             const response = await this.axios.get(url, await this.getRequestConfig()).then((n) => n.data);
 
             for (const item of response.$data) {
-                const formatted = formatter(item);
+                const formatted = formatter(JSON.stringify(item));
 
                 yield formatted;
             }
@@ -76,7 +72,7 @@ export abstract class BearerTokenAPI {
         const config = await this.getRequestConfig();
         config.data = body;
 
-        return this.axios.post(url, config).then((res) => response_formatter(res.data.$data));
+        return this.axios.post(url, config).then((res) => response_formatter(JSON.stringify(res.data.$data)));
     }
 
     // PUT
@@ -84,7 +80,7 @@ export abstract class BearerTokenAPI {
         const config = await this.getRequestConfig();
         config.data = body;
 
-        return this.axios.put(url, config).then((res) => (response_formatter ? response_formatter(res.data.$data) : res.status === 200));
+        return this.axios.put(url, config).then((res) => (response_formatter ? response_formatter(JSON.stringify(res.data.$data)) : res.status === 200));
     }
 
     /**

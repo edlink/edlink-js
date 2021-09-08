@@ -49,10 +49,10 @@ export class Auth {
             refresh_token: this.refresh_token
         });
 
-        const expiration = Date.now() + response.data.expires_in * 1000;
+        const expiration = Date.now() + response.data.$data.expires_in * 1000;
 
-        this.access_token = response.data.access_token;
-        this.refresh_token = response.data.refresh_token;
+        this.access_token = response.data.$data.access_token;
+        this.refresh_token = response.data.$data.refresh_token;
         this.expires = new Date(expiration);
     }
 
