@@ -2,7 +2,7 @@
 
 This NodeJS SDK is out-of-date and is no longer supported. However, the Edlink API is
 straightforward to call directly from a programming language of your choice. Check out
-our docs here: https://ed.link/docs/guides/v2.0/quickstart
+our docs here: https://ed.link/docs/guides/v2.0/introduction
 
 
 # edlink-js
