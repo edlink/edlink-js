@@ -1,15 +1,14 @@
+# Update
+
+This NodeJS SDK is out-of-date and is no longer supported. However, the Edlink API is
+straightforward to call directly from a programming language of your choice. Check out
+our docs here: https://ed.link/docs/guides/v2.0/introduction
+
+
 # edlink-js
 [![npm version](https://img.shields.io/npm/v/@edlink/edlink-js)](https://www.npmjs.org/package/@edlink/edlink-js)
 
 This Edlink JavaScript & TypeScript SDK is a NodeJS wrapper for the Edlink API.
-
-| API | v1 | v2 |
-|----|----|----|
-| Graph | ✅ | ✅ |
-| User | ✅ | ❌ |
-| Meta | ✅ | ❌ |
-
-Support for the Edlink User API v2 and Meta API v2 will be added when they are introduced. They are currently slated for Fall 2021.
 
 ## Quickstart Guide
 
@@ -86,8 +85,8 @@ const identity = await Auth.from({
 // This is a shortcut for "Exchange the Code for Access and Refresh Tokens" in the
 // following guide: https://ed.link/docs/guides/v1.0/authentication
 const identity = await Auth.fromCode(
-    '<redirect uri>', // the redirect uri that you used to retrieve the code 
-    '<authorization code>', // the `code` you received as a url parameter 
+    '<redirect uri>', // the redirect uri that you used to retrieve the code
+    '<authorization code>', // the `code` you received as a url parameter
     '<application id>', '<application secret>');
 
 // Access the v1 User API using that identity.
